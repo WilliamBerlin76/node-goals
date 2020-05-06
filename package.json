@@ -1,0 +1,31 @@
+{
+  "name": "express-backend-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js",
+    "test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cleaner": "^2.0.0-alpha",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.22.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.1",
+    "morgan": "^1.10.0",
+    "pg": "^7.18.2",
+    "sqlite3": "^4.2.0"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "nodemon": "^2.0.3"
+  }
+}

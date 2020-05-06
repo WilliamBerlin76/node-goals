@@ -1,0 +1,1 @@
+// validation requirements can be filled out here. ie: minimum username or passord length
