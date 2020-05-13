@@ -1,7 +1,8 @@
 const db = require('../config/db-config')
 
 module.exports = {
-    addUserCat
+    addUserCat,
+    removeUserCat
 }
 
 async function addCategory(name){
@@ -30,4 +31,12 @@ async function addUserCat(user_id, catName){
                     user_id: user_id
                 })
     }
+}
+
+// removes a category from a user
+function removeUserCat(id){
+    return db('user_category')
+            .where({id})
+            .first()
+            .del()
 }
