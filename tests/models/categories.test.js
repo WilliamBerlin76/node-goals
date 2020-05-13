@@ -59,6 +59,6 @@ describe("categories-model", () => {
 
             const userCategories = await retrieveUserCats(user.id)
             expect(userCategories.categories).toHaveLength(3)
-        })
-    })
+        });
+    });
 });

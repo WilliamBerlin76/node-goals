@@ -38,7 +38,7 @@ async function addUserCat(user_id, catName){
 async function retrieveUserCats(user_id){
     const user = await db('users')
                         .where({id: user_id})
-                        .select('id', 'username', 'email')
+                        .select('id as user_id', 'username', 'email')
                         .first()
     if (user){
         const categories = await db("user_category as uc")
