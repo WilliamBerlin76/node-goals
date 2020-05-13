@@ -1,6 +1,6 @@
 const db = require('../../config/db-config.js');
 
-const { addUserCat, removeUserCat } = require('../../models/categories-model')
+const { addUserCat, removeUserCat, retrieveUserCats } = require('../../models/categories-model')
 
 describe("categories-model", () => {
     beforeEach(async () => {
@@ -47,7 +47,18 @@ describe("categories-model", () => {
                                         .first()
             // check if still exists in categories table
             expect(retCategory.name).toBe('goalcat')
+        });
+    });
+
+    describe('retrieve user categories', () => {
+        it("should retrieve a user's categories", async () => {
+            const user = {id: 1}
+            await addUserCat(user.id, "test1")
+            await addUserCat(user.id, "test2")
+            await addUserCat(user.id, "test3")
+
+            const userCategories = await retrieveUserCats(user.id)
+            expect(userCategories.categories).toHaveLength(3)
         })
-       
     })
 });
