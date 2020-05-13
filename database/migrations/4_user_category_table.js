@@ -1,9 +1,11 @@
 
 exports.up = function(knex) {
-    knex.schema.createTable('user_category', tbl => {
+    
+    return knex.schema.createTable('user_category', tbl => {
         tbl.increments();
         tbl.integer('user_id')
             .unsigned()
+            .notNullable()
             .references('id')
             .inTable('users')
             .onUpdate('CASCADE')
@@ -11,13 +13,14 @@ exports.up = function(knex) {
 
         tbl.integer('category_id')
             .unsigned()
+            .notNullable()
             .references('id')
             .inTable('categories')
             .onUpdate('CASCADE')
             .onDelete('CASCADE');
-    })
+    });
 };
 
 exports.down = function(knex) {
-    knex.schema.dropTableIfExists('user_category')
+    return knex.schema.dropTableIfExists('user_category')
 };
