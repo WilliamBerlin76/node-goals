@@ -3,7 +3,8 @@ const db = require('../config/db-config')
 module.exports = {
     addUserCat,
     removeUserCat,
-    retrieveUserCats
+    retrieveUserCats,
+    editUserCat
 }
 // adds to categories table
 async function addCategory(name){
@@ -56,6 +57,30 @@ async function retrieveUserCats(user_id){
     }
 }
 
+// edits the category name connected to a user
+async function editUserCat(id, newName){
+    const category = await db('categories')
+                            .where({name: newName})
+                            .first()
+    // check if newName in categories table
+    if (category){
+        //update the category id to the existing one in the db
+        return db('user_category')
+                .update({category_id: category.id})
+                .where({id})
+    } else {
+        // create new category name
+        await addCategory(newName)
+        const newCategory = await db('categories')
+                                    .where({name: newName})
+                                    .first()
+        // update the category id to match the new category
+        return db('user_category')
+                .update({category_id: newCategory.id})
+                .where({id})
+    }
+
+}
 // removes a category from a user
 function removeUserCat(id){
     return db('user_category')

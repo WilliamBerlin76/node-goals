@@ -1,6 +1,6 @@
 const db = require('../../config/db-config.js');
 
-const { addUserCat, removeUserCat, retrieveUserCats } = require('../../models/categories-model')
+const { addUserCat, removeUserCat, retrieveUserCats, editUserCat } = require('../../models/categories-model')
 
 describe("categories-model", () => {
     beforeEach(async () => {
@@ -59,6 +59,16 @@ describe("categories-model", () => {
 
             const userCategories = await retrieveUserCats(user.id)
             expect(userCategories.categories).toHaveLength(3)
+        });
+    });
+    describe('editUserCat', () => {
+        it("should update the category name", async () => {
+            const user = {id: 1}
+            await addUserCat(user.id, "test1")
+
+            await editUserCat(1, "changedTest")
+            const userCategories = await retrieveUserCats(user.id)
+            expect(userCategories.categories[0].name).toBe('changedTest')
         });
     });
 });
