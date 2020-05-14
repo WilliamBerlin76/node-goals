@@ -35,9 +35,23 @@ router.delete('/:cat_id/remove', (req, res) => {
             res.status(200).json({message: 'the selected category was deleted'})
         })
         .catch(err => {
-            console.log(err)
             res.status(500).json({error: 'the server failed to remove the category'})
         })
+});
+
+router.put('/:cat_id/update', (req, res) => {
+    const newName = req.body.name;
+    const id = req.params.cat_id;
+
+    Categories.editUserCat(id, newName)
+        .then(newCat => {
+            const response = {id: id, name: newName, message: 'selected category updated'}
+            res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({error: 'the server failed to update the category'})
+        })
+
 })
 
 module.exports = router

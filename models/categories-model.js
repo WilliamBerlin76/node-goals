@@ -79,8 +79,8 @@ async function editUserCat(id, newName){
                 .update({category_id: newCategory.id})
                 .where({id})
     }
+};
 
-}
 // removes a category from a user
 function removeUserCat(id){
     return db('user_category')
