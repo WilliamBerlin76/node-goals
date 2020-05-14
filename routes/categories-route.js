@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Categories = require('../models/categories-model');
 
+//gets categories by user id
 router.get('/:user_id', (req, res) => {
     Categories.retrieveUserCats(req.params.user_id)
         .then(cats => {
@@ -8,6 +9,34 @@ router.get('/:user_id', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({ error: "the server failed to retrieve the categories"})
+        })
+});
+
+//adds category to user
+router.post('/:user_id', (req, res) => {
+    const catName = req.body.name
+    const id = req.params.user_id
+
+    Categories.addUserCat(id, catName)
+        .then(async cat => {
+            const response = await Categories.retrieveUserCats(req.params.user_id)
+            res.status(201).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({ error: "the server failed to add the category to the user"})
+        })
+});
+
+// removes a category from the user referencing the id from the user_category table
+router.delete('/:cat_id/remove', (req, res) => {
+    
+    Categories.removeUserCat(req.params.cat_id)
+        .then(cat => {
+            res.status(200).json({message: 'the selected category was deleted'})
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({error: 'the server failed to remove the category'})
         })
 })
 

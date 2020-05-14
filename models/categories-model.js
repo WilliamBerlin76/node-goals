@@ -45,7 +45,7 @@ async function retrieveUserCats(user_id){
                                     .join("users as u", "uc.user_id", "u.id")
                                     .join("categories as c", "uc.category_id", "c.id")
                                     .select(
-                                        "uc.id as user_category_id",
+                                        "uc.id as id",
                                         "c.name as name"
                                     )
                                     .where({user_id: user_id})
