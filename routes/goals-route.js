@@ -39,7 +39,19 @@ router.put('/:goal_id/update', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({error: "The server failed to update the goal name"})
+        });
+});
+
+// remove goal from category
+router.delete('/:goal_id/remove', (req, res) => {
+
+    Goals.removeGoal(req.params.goal_id)
+        .then(goal => {
+            res.status(200).json({message: "The goal was removed from the category"})
         })
-})
+        .catch(err => {
+            res.status(500).json({error: "The server failed to remvove the goal"})
+        });
+});
 
 module.exports = router
