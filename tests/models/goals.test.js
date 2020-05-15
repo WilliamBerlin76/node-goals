@@ -1,6 +1,6 @@
 const db = require('../../config/db-config.js');
 
-const { addCatGoal, getCatGoals, removeGoal } = require('../../models/goals-model')
+const { addCatGoal, getCatGoals, removeGoal, editCatGoal } = require('../../models/goals-model')
 
 describe("goals-models", () => {
     beforeEach(async () => {
@@ -68,7 +68,21 @@ describe("goals-models", () => {
             const newGoal = await db("goal_user_cat");
 
             expect(newGoal).toHaveLength(0)
+        });
+    });
 
-        })
-    })
+    describe("editCatGoal", () => {
+        it('should update the goal name connected to the category', async () => {
+            await addCatGoal(1, "test-goal");
+
+            await editCatGoal(1, 'changed-test')
+            
+            const goal = await db("goal_user_cat as guc")
+                                .join('goals as g', 'g.id', 'guc.goal_id')
+                                .select('g.name', 'guc.id')
+                                .where('guc.id', 1)
+                                .first()
+            expect(goal.name).toBe('changed-test')
+        });
+    });
 });

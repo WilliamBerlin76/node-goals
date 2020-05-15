@@ -3,7 +3,8 @@ const db = require('../config/db-config')
 module.exports = {
     addCatGoal, 
     getCatGoals,
-    removeGoal
+    removeGoal,
+    editCatGoal
 }
 
 function addGoal(name){
@@ -28,6 +29,7 @@ async function addCatGoal(cat_id, goalName){
         const newGoal = await db('goals')
                             .where({name: goalName})
                             .first();
+        
         return db('goal_user_cat')
                 .insert({
                     user_cat_id: cat_id,
@@ -58,10 +60,31 @@ async function getCatGoals(cat_id){
     };
 };
 
+async function editCatGoal(id, newName){
+    const goal = await db('goals')
+                        .where({name: newName})
+                        .first();
+
+    if (goal){
+        return db('goal_user_cat')
+                .update({goal_id: goal.id})
+                .where({id});       
+    } else {
+        await addGoal(newName)
+        const newGoal = await db('goals')
+                                .where({name: newName})
+                                .first();
+        
+        return db('goal_user_cat')
+                .update({goal_id: newGoal.id})
+                .where({id})
+    };
+};
+
 // removes a goal from a category
 function removeGoal(id){
     return db('goal_user_cat')
             .where({id})
             .first()
-            .del()
-}
+            .del();
+};
