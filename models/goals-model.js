@@ -2,7 +2,8 @@ const db = require('../config/db-config')
 
 module.exports = {
     addCatGoal, 
-    getCatGoals
+    getCatGoals,
+    removeGoal
 }
 
 function addGoal(name){
@@ -35,6 +36,7 @@ async function addCatGoal(cat_id, goalName){
     };
 };
 
+// gets goals connected to the user_cat_id
 async function getCatGoals(cat_id){
     const category = await db('user_category as uc')
                             .join('categories as c', 'uc.category_id', 'c.id')
@@ -55,3 +57,11 @@ async function getCatGoals(cat_id){
         };
     };
 };
+
+// removes a goal from a category
+function removeGoal(id){
+    return db('goal_user_cat')
+            .where({id})
+            .first()
+            .del()
+}

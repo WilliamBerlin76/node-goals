@@ -1,6 +1,6 @@
 const db = require('../../config/db-config.js');
 
-const { addCatGoal, getCatGoals } = require('../../models/goals-model')
+const { addCatGoal, getCatGoals, removeGoal } = require('../../models/goals-model')
 
 describe("goals-models", () => {
     beforeEach(async () => {
@@ -54,6 +54,21 @@ describe("goals-models", () => {
     
             expect(goals.goals).toHaveLength(3)
             expect(goals2.goals).toHaveLength(2)
+        });
+    });
+
+    describe("removeGoal", () => {
+        it('should remove the goal from the category', async () => {
+            await addCatGoal(1, "test-goal");
+
+            const goal = await db("goal_user_cat");
+            expect(goal).toHaveLength(1)
+
+            await removeGoal(goal[0].id)
+            const newGoal = await db("goal_user_cat");
+
+            expect(newGoal).toHaveLength(0)
+
         })
     })
 });
