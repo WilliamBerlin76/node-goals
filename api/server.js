@@ -10,7 +10,7 @@ middlewareConfig(server);
 server.use('/api', apiRouter);
 
 server.get("/", (req, res) => {
-    res.send('Add welcome message here')
+    res.send('Welcome to the Goals API!')
 });
 
 module.exports = server;

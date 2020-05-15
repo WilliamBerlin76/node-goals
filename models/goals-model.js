@@ -43,7 +43,7 @@ async function getCatGoals(cat_id){
     const category = await db('user_category as uc')
                             .join('categories as c', 'uc.category_id', 'c.id')
                             .select('uc.id as cat_id', 'c.name as category')
-                            .where({category_id: cat_id})
+                            .where('uc.id', '=', cat_id)
                             .first()
     if (category) {
         const goals = await db('goal_user_cat as guc')
