@@ -1,6 +1,6 @@
-# Express backend boilerplate
+# Goals API
 
--- this repo is intended to be a general boilerplate to get started on a node backend with express with authentication using json web tokens
+-- This is an API designed to help users organize their personal goals
 
 ## Must add a personalized .env file for the port DB_ENV, and JWT_SECRET
 
