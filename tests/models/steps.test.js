@@ -1,6 +1,6 @@
 const db = require('../../config/db-config.js');
 
-const { addStepToGoal, getGoalSteps, editGoalStep } = require('../../models/steps-model');
+const { addStepToGoal, getGoalSteps, editGoalStep, removeStep } = require('../../models/steps-model');
 
 describe("goals-models", () => {
     beforeEach(async () => {
@@ -77,6 +77,19 @@ describe("goals-models", () => {
             expect(stepList.steps[1].step_num).toBe(3);
             expect(stepList.steps[2].name).toBe('testChange');
             expect(stepList.steps[2].step_num).toBe(4);
+        });
+    });
+
+    describe('removeStep', () => {
+        it('should remove the step from the goal', async () => {
+            await addStepToGoal(1, 'test-step1', 1);
+            await addStepToGoal(1, 'test-step3', 3);
+            await addStepToGoal(1, 'test-step2', 2);
+
+            await removeStep(2);
+            const stepList = await getGoalSteps(1);
+
+            expect(stepList.steps).toHaveLength(2);
         });
     });
 });

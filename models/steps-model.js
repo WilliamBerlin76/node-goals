@@ -3,7 +3,8 @@ const db = require('../config/db-config');
 module.exports = {
     addStepToGoal,
     getGoalSteps,
-    editGoalStep
+    editGoalStep,
+    removeStep
 };
 
 function addStep(name){
@@ -103,3 +104,10 @@ async function editGoalStep(id, changes){
                 .where({id});
     }; 
 };
+
+function removeStep(id){
+    return db('step_list')
+            .where({id})
+            .first()
+            .del();
+}
