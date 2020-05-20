@@ -2,7 +2,8 @@ const db = require('../config/db-config');
 
 module.exports = {
     addStepToGoal,
-    getGoalSteps
+    getGoalSteps,
+    editGoalStep
 };
 
 function addStep(name){
@@ -46,7 +47,7 @@ async function getGoalSteps(goal_id){
         const steps = await db('step_list as sl')
                                 .join('steps as s', 'sl.step_id', 's.id')
                                 .select(
-                                    'sl.id as id',
+                                    'sl.id as step_id',
                                     's.name as name',
                                     'sl.step_num'
                                 )
@@ -57,4 +58,48 @@ async function getGoalSteps(goal_id){
             steps: steps
         };           
     };
+};
+
+async function editGoalStep(id, changes){
+    if (changes.name){
+        const step = await db('steps')
+                        .where({name: changes.name})
+                        .first();
+        
+        if (step) {
+            if (changes.stepNum){
+                return db('step_list')
+                        .update({
+                            step_id: step.id,
+                            step_num: changes.stepNum
+                        })
+                        .where({id});
+            } else {
+                return db('step_list')
+                        .update({step_id: step.id})
+                        .where({id})
+            };
+        } else {
+            await addStep(changes.name);
+            const newStep = await db('steps')
+                                    .where({name: changes.name})
+                                    .first();
+            if (changes.stepNum){
+                return db('step_list')
+                        .update({
+                            step_id: newStep.id,
+                            step_num: changes.stepNum
+                        })
+                        .where({id});
+            } else {
+                return db('step_list')
+                        .update({step_id: newStep.id})
+                        .where({id});
+            };
+        };
+    } else {
+        return db('step_list')
+                .update({step_num: changes.stepNum})
+                .where({id});
+    }; 
 };
