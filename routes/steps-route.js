@@ -45,4 +45,16 @@ router.put('/:step_id/update', (req, res) => {
         });
 });
 
+// remove a step from a goal
+router.delete('/:step_id/remove', (req, res) => {
+
+    Steps.removeStep(req.params.step_id)
+        .then(step => {
+            res.status(200).json({ message: "the step was successfully deleted" });
+        })
+        .catch(err => {
+            res.status(500).json({ error: "the server failed to delete the step" });
+        });
+});
+
 module.exports = router;
