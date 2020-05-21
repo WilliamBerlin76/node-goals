@@ -54,4 +54,4 @@ router.put('/:cat_id/update', (req, res) => {
 
 })
 
-module.exports = router
+module.exports = router;

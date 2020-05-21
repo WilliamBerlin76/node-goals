@@ -9,7 +9,7 @@ module.exports = {
 
 function addStep(name){
     return db('steps')
-            .insert({name: name})
+            .insert({name: name});
 };
 
 async function addStepToGoal(goal_id, stepName, stepNum){
@@ -43,7 +43,7 @@ async function getGoalSteps(goal_id){
                         .join('goals as g', 'guc.goal_id', 'g.id')
                         .select('guc.id as goal_id', 'g.name as goal')
                         .where('guc.id', '=', goal_id)
-                        .first()
+                        .first();
     if (goal) {
         const steps = await db('step_list as sl')
                                 .join('steps as s', 'sl.step_id', 's.id')
@@ -78,7 +78,7 @@ async function editGoalStep(id, changes){
             } else {
                 return db('step_list')
                         .update({step_id: step.id})
-                        .where({id})
+                        .where({id});
             };
         } else {
             await addStep(changes.name);
@@ -110,4 +110,4 @@ function removeStep(id){
             .where({id})
             .first()
             .del();
-}
+};
