@@ -9,6 +9,7 @@ const Users = require("../models/users-model");
 // request body as req.decodedToken and req.userObj
 module.exports = async (req, res, next) => {
     const token = req.headers.authorization;
+    const { user_id } = req.params;
     if (token) {
         jwt.verify(token, jwtSecret, async (err, decodedToken) => {
             try {
@@ -16,12 +17,14 @@ module.exports = async (req, res, next) => {
                     res.status(403).json({ message: "That authentication token provided is invalid." })
                 } else {
                     const user = await Users.getById(decodedToken.id);
-                    if (user){
+                    if (user && parseInt(user_id) === user.id){
                         req.decodedToken = decodedToken;
                         req.userObj = user;
                         next();
-                    }
-                } 
+                    } else if (parseInt(user_id) !== user.id) {
+                        res.status(403).json({ message: "This token does not belong to this user"})
+                    };
+                }; 
             } catch (err) {
                 res.status(500).json({ error: "The server failed to find that user." });
             

@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const Categories = require('../models/categories-model');
-
+const restricted = require('../middleware/restricted-middleware');
 
 //gets categories by user id
-router.get('/:user_id', (req, res) => {
+router.get('/:user_id', restricted, (req, res) => {
     Categories.retrieveUserCats(req.params.user_id)
         .then(cats => {
             res.status(200).json(cats)
@@ -14,7 +14,7 @@ router.get('/:user_id', (req, res) => {
 });
 
 //adds category to user
-router.post('/:user_id', (req, res) => {
+router.post('/:user_id', restricted, (req, res) => {
     const catName = req.body.name
     const id = req.params.user_id
 
@@ -37,7 +37,7 @@ router.delete('/:cat_id/remove', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({error: 'the server failed to remove the category'})
-        })
+        });
 });
 
 router.put('/:cat_id/update', (req, res) => {
@@ -51,8 +51,7 @@ router.put('/:cat_id/update', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({error: 'the server failed to update the category'})
-        })
-
-})
+        });
+});
 
 module.exports = router;

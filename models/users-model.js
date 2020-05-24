@@ -4,9 +4,7 @@ module.exports = {
     get,
     getById,
     add,
-    findBy,
-    addToken,
-    getTokenByUserId
+    findBy
 }
 
 function get() {
@@ -29,19 +27,4 @@ function add(user) {
     return db('users')
         .insert(user, 'id')
         .then(([id]) => getById(id));
-};
-
-function addToken(token, user_id){
-    return db('tokens')
-            .insert({
-                token: token,
-                user_id: user_id
-            });
-};
-
-function getTokenByUserId(user_id){
-    return db('tokens')
-            .select('token')
-            .where({user_id: user_id})
-            .first();
 };

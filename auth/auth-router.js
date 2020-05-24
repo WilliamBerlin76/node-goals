@@ -14,8 +14,6 @@ router.post('/register', (req, res) => {
     Users.add(user)
     .then(async newUser => {
         const token = generateToken(newUser);
-        const hashedToken = bcrypt.hashSync(token, 12);
-        await Users.addToken(hashedToken, newUser.id)
         res.status(201).json({ newUser, token });
     })
     .catch(err => {
@@ -56,7 +54,7 @@ router.get('/users', (req, res) => {
         .catch(err => {
             console.log('GETTING USERS', err);
             res.status(500).json({ error: 'there was an error retrieving the users from the database'})
-        })
-})
+        });
+});
 
 module.exports = router;
