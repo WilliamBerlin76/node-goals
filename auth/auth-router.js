@@ -12,9 +12,11 @@ router.post('/register', (req, res) => {
     user.password = hashedPassword;
 
     Users.add(user)
-    .then(newUser => {
+    .then(async newUser => {
         const token = generateToken(newUser);
-        res.status(201).json({ newUser, token })
+        const hashedToken = bcrypt.hashSync(token, 12);
+        await Users.addToken(hashedToken, newUser.id)
+        res.status(201).json({ newUser, token });
     })
     .catch(err => {
         console.log('REGISTRATION ERROR', err)

@@ -9,7 +9,6 @@ const Users = require("../models/users-model");
 // request body as req.decodedToken and req.userObj
 module.exports = async (req, res, next) => {
     const token = req.headers.authorization;
-    
     if (token) {
         jwt.verify(token, jwtSecret, async (err, decodedToken) => {
             try {

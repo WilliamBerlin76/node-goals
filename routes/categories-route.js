@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Categories = require('../models/categories-model');
 
+
 //gets categories by user id
 router.get('/:user_id', (req, res) => {
     Categories.retrieveUserCats(req.params.user_id)
