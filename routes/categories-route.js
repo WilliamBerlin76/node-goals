@@ -14,9 +14,9 @@ router.get('/:user_id', restricted, (req, res) => {
 });
 
 //adds category to user
-router.post('/:user_id', restricted, (req, res) => {
-    const catName = req.body.name
-    const id = req.params.user_id
+router.post('/:user_id/add', restricted, (req, res) => {
+    const catName = req.body.name;
+    const id = req.params.user_id;
 
     Categories.addUserCat(id, catName)
         .then(async cat => {
